@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="GL_CP" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/GL_CP" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="/home/aleh/CodeBlocks_projects/GL_CP/" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-lglfw3 -ldl -lX11 -lpthread -lm -lXrandr -lXi" />
+					<Add library="lib/libglfw3.a" />
+					<Add directory="../GL_CP" />
+					<Add directory="include" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/GL_CP" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="../GL_CP" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lglfw3 -ldl -lX11 -lpthread -lm -lXrandr -lXi" />
+					<Add library="lib/libglfw3.a" />
+					<Add directory="/home/aleh/CodeBlocks_projects/GL_CP/" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="/home/aleh/CodeBlocks_projects/GL_CP/" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add option="-lglfw3 -ldl -lX11 -lpthread -lm -lXrandr -lXi" />
+			<Add library="lib/libglfw3.a" />
+			<Add directory="/home/aleh/CodeBlocks_projects/GL_CP/" />
+			<Add directory="lib" />
+		</Linker>
+		<Unit filename="include/ElementsBuffer.h" />
+		<Unit filename="include/GLFW/glfw3.h" />
+		<Unit filename="include/Shader.h" />
+		<Unit filename="include/Shape.h" />
+		<Unit filename="include/Torus.h" />
+		<Unit filename="include/VertexArrayObject.h" />
+		<Unit filename="include/VertexBuffer.hpp" />
+		<Unit filename="include/constants.h" />
+		<Unit filename="include/font_arial.hpp" />
+		<Unit filename="include/gl_utils.h" />
+		<Unit filename="include/glad/glad.h" />
+		<Unit filename="include/glm/gtc/constants.hpp" />
+		<Unit filename="include/glm/gtc/constants.inl" />
+		<Unit filename="include/imgui/imgui.cpp" />
+		<Unit filename="include/imgui/imgui_draw.cpp" />
+		<Unit filename="include/imgui/imgui_impl_glfw.cpp" />
+		<Unit filename="include/imgui/imgui_impl_opengl3.cpp" />
+		<Unit filename="include/imgui/imgui_tables.cpp" />
+		<Unit filename="include/imgui/imgui_widgets.cpp" />
+		<Unit filename="include/shaders.h" />
+		<Unit filename="src/ElementsBuffer.cpp" />
+		<Unit filename="src/Shader.cpp" />
+		<Unit filename="src/Shape.cpp" />
+		<Unit filename="src/Torus.cpp" />
+		<Unit filename="src/VertexArrayObject.cpp" />
+		<Unit filename="src/VertexBuffer.cpp" />
+		<Unit filename="src/gl_utils.cpp" />
+		<Unit filename="src/glad.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/main.cpp" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
