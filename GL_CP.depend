@@ -148,7 +148,7 @@
 	<stdint.h>
 	"imstb_textedit.h"
 
-1665235949 source:/home/aleh/CodeBlocks_projects/GL_CP/src/gl_utils.cpp
+1666812712 source:/home/aleh/CodeBlocks_projects/GL_CP/src/gl_utils.cpp
 	<gl_utils.h>
 
 1665172395 /home/aleh/CodeBlocks_projects/GL_CP/include/gl_utils.h
@@ -165,7 +165,7 @@
 	<inttypes.h>
 	<stdint.h>
 
-1665172200 /home/aleh/CodeBlocks_projects/GL_CP/include/constants.h
+1666775502 /home/aleh/CodeBlocks_projects/GL_CP/include/constants.h
 
 1664116274 source:/home/aleh/CodeBlocks_projects/GL_CP/src/glad.c
 	<stdio.h>
@@ -176,20 +176,22 @@
 	<winapifamily.h>
 	<dlfcn.h>
 
-1665247029 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Shader.cpp
+1666983280 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Shader.cpp
 	"Shader.h"
 
-1665246934 /home/aleh/CodeBlocks_projects/GL_CP/include/Shader.h
+1666983217 /home/aleh/CodeBlocks_projects/GL_CP/include/Shader.h
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 	<iostream>
+	<glm/glm.hpp>
 
-1665220369 source:/home/aleh/CodeBlocks_projects/GL_CP/src/VertexArrayObject.cpp
+1666802513 source:/home/aleh/CodeBlocks_projects/GL_CP/src/VertexArrayObject.cpp
 	"VertexArrayObject.h"
 
-1665220352 /home/aleh/CodeBlocks_projects/GL_CP/include/VertexArrayObject.h
+1666802465 /home/aleh/CodeBlocks_projects/GL_CP/include/VertexArrayObject.h
 	<glad/glad.h>
 	<GLFW/glfw3.h>
+	<Shape.h>
 
 1665219864 source:/home/aleh/CodeBlocks_projects/GL_CP/src/VertexBuffer.cpp
 	<VertexBuffer.hpp>
@@ -198,7 +200,7 @@
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 
-1666609427 source:/home/aleh/CodeBlocks_projects/GL_CP/src/main.cpp
+1666983025 source:/home/aleh/CodeBlocks_projects/GL_CP/src/main.cpp
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 	<cmath>
@@ -219,12 +221,15 @@
 	<VertexBuffer.hpp>
 	<VertexArrayObject.h>
 	<ElementsBuffer.h>
+	<Texture.h>
 	<Shader.h>
 	<Torus.h>
+	<Octahedron.h>
+	<Cylinder.h>
 
 1664958207 /home/aleh/CodeBlocks_projects/GL_CP/include/font_arial.hpp
 
-1666602023 /home/aleh/CodeBlocks_projects/GL_CP/include/shaders.h
+1666983544 /home/aleh/CodeBlocks_projects/GL_CP/include/shaders.h
 
 1650451179 /home/aleh/CodeBlocks_projects/GL_CP/include/glm/vec3.hpp
 	"./ext/vector_bool3.hpp"
@@ -1062,11 +1067,12 @@
 1650451179 /home/aleh/CodeBlocks_projects/GL_CP/include/glm/gtc/type_ptr.inl
 	<cstring>
 
-1666609462 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Torus.cpp
+1666985668 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Torus.cpp
 	"Torus.h"
 
-1666608707 /home/aleh/CodeBlocks_projects/GL_CP/include/Torus.h
+1666635458 /home/aleh/CodeBlocks_projects/GL_CP/include/Torus.h
 	"Shape.h"
+	<iostream>
 
 1650451179 /home/aleh/CodeBlocks_projects/GL_CP/include/glm/glm.hpp
 	"detail/_fixes.hpp"
@@ -1144,12 +1150,63 @@
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 
-1666609182 /home/aleh/CodeBlocks_projects/GL_CP/include/Shape.h
+1666949220 /home/aleh/CodeBlocks_projects/GL_CP/include/Shape.h
+	<iostream>
 	<vector>
 	<glm/vec3.hpp>
 	<glm/glm.hpp>
 	<glm/gtc/constants.hpp>
 
-1666608527 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Shape.cpp
+1666860938 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Shape.cpp
+	"glm/glm.hpp"
+	<glm/gtx/normal.hpp>
 	"Shape.h"
+
+1666627746 source:/home/aleh/CodeBlocks_projects/GL_CP/src/stb_image.cpp
+	"stb_image.h"
+
+1666627621 /home/aleh/CodeBlocks_projects/GL_CP/include/stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1666812851 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Texture.cpp
+	"Texture.h"
+
+1666799658 /home/aleh/CodeBlocks_projects/GL_CP/include/Texture.h
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<stb_image.h>
+	<iostream>
+
+1666860968 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Octahedron.cpp
+	"Octahedron.h"
+
+1666860939 /home/aleh/CodeBlocks_projects/GL_CP/include/Octahedron.h
+	"Shape.h"
+
+1650451179 /home/aleh/CodeBlocks_projects/GL_CP/include/glm/gtx/normal.hpp
+	"../glm.hpp"
+	"normal.inl"
+
+1650451179 /home/aleh/CodeBlocks_projects/GL_CP/include/glm/gtx/normal.inl
+
+1666959619 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Cylinder.cpp
+	"Cylinder.h"
+
+1666941681 /home/aleh/CodeBlocks_projects/GL_CP/include/Cylinder.h
+	<Shape.h>
+	<glm/gtc/constants.hpp>
 

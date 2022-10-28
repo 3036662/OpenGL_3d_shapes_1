@@ -2,6 +2,7 @@
 #define TORUS_H
 
 #include "Shape.h"
+#include <iostream>
 
 
 class Torus:public Shape

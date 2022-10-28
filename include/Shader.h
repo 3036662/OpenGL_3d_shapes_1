@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <glm/glm.hpp>
 
 
 class Shader
@@ -31,6 +32,15 @@ class Shader
         // Projection Matrix
         bool findProjMatrixLocation(const char* uniform_name);
         bool setProjMatrix(const float* matrix_prt);
+        // light source location
+        bool findLightSourceLocation(const char* uniform_name);
+        bool setLightSourceVec(const glm::vec3& light_pos_vec);
+        // light color
+        bool findLightColorLocation(const char* uniform_name);
+        bool setLightColorVec(const glm::vec3& light_color_vec);
+
+
+
 
     protected:
 
@@ -39,11 +49,16 @@ class Shader
         unsigned int fragmentShader_id;
         unsigned int shaderProgram_id;
 
+
         char infoLog[512]; // для записис результата проверки ошибок
 
         unsigned int modelLoc;
         unsigned int viewLoc;
         unsigned int projLoc;
+
+        unsigned int lightSourceLoc;
+        unsigned int lightColorLoc;
+
 
 };
 

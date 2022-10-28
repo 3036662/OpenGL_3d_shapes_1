@@ -3,6 +3,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <Shape.h> //vertex
 
 class VertexArrayObject
 {
@@ -11,6 +12,7 @@ class VertexArrayObject
         ~VertexArrayObject();
 
         void bindBuffer();
+        void bindDataSrtucture();
 
     protected:
 

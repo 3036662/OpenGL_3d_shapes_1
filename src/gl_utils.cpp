@@ -4,6 +4,7 @@
 GLFWwindow* OpenGlInit(unsigned int width,unsigned int height,const char* name){
      // glfw: инициализация и конфигурирование
     glfwInit();
+    glfwWindowHint(GLFW_SAMPLES, 4); // anti aliasing
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -23,6 +24,9 @@ GLFWwindow* OpenGlInit(unsigned int width,unsigned int height,const char* name){
         std::cout << "Failed to initialize GLAD" << std::endl;
         return nullptr;
     }
+    glEnable(GL_MULTISAMPLE); // anti aliasing
+    glEnable(GL_BLEND);
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     return window;
 }
 
@@ -41,4 +45,5 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     //std::cout<<"Window changed"<<std::endl;
     glViewport(0, 0, width, height);
 }
+
 

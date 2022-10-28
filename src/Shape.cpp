@@ -1,4 +1,7 @@
+#include "glm/glm.hpp"
+#include <glm/gtx/normal.hpp>
 #include "Shape.h"
+
 
 Shape::Shape()
 {
@@ -34,4 +37,15 @@ const unsigned Shape::getIndDataSize(){
 // количество индексов
 const unsigned Shape::getIndCount(){
     return this->indices.size();
+}
+
+// соберет треугольник из трех координат
+// и трех координат текстур
+// и положит точки в массив verticies
+void Shape::make_triangle(const glm::vec3& a,const glm::vec3& b,const glm::vec3& c,const glm::vec2& texA,const glm::vec2& texB,const glm::vec2& texC){
+    glm::vec3 norm; // нормаль треугольника
+    norm=glm::triangleNormal(a,b,c);
+    vertices.emplace_back(Vertex(a,norm,texA));
+    vertices.emplace_back(Vertex(b,norm,texB));
+    vertices.emplace_back(Vertex(c,norm,texC));
 }

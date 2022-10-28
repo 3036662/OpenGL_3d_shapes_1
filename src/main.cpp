@@ -20,14 +20,23 @@
 #include <glm/ext/scalar_constants.hpp> // glm::pi
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 
+
+
 #include <gl_utils.h>
 #include <VertexBuffer.hpp>
 #include <VertexArrayObject.h>
 #include <ElementsBuffer.h>
-
+#include <Texture.h>
 #include <Shader.h>
 
 #include <Torus.h>
+#include <Octahedron.h>
+#include <Cylinder.h>
+
+//const char* RUBBER_TEXT_PATH="/home/aleh/CodeBlocks_projects/GL_CP/Tex/Rubber.png";
+const char* RUBBER_TEXT_PATH="Tex/Rubber_small.png";
+const char* CONCRETE_TEXT_PATH="Tex/concrete.png";
+const char* RUST_TEXT_PATH="Tex/rust.png";
 
 int main()
 {
@@ -36,33 +45,52 @@ int main()
         return -1;
     }
     /**************************************/
-
-    Torus torus(2,1);
-
-
-    /***************************************************************/
+    Torus* torus=new Torus(1,0.5);
     // создать буфер для точек (vertex bufer)
-    VertexBuffer* vbo=new VertexBuffer();
-    vbo->bindBuffer();
-    vbo->pushData(torus.getRowVerticiesData(),torus.getVertDataSize());
-//    // Vertex Array Object
-    VertexArrayObject* vao=new VertexArrayObject();
-    vao->bindBuffer();
-    // Elemns Buffer
-    ElementsBuffer* ebo=new ElementsBuffer();
-    ebo->bindBuffer();
-    ebo->pushData(torus.getIndData(),torus.getIndDataSize());
-    // аттрибуты данных, арггументы:  индекс аттрибута, количество аттрибутов, тип аттрибута
-    // необходимость нормализации = false, смещение между наборами аттрибутов , смещение до первого аттрибута
-    glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec3), (void*)0); // координаты
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1,3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec3), (void*)( sizeof(glm::vec3) )); // нормали
-    glEnableVertexAttribArray(1);
+    VertexBuffer* vboTorus=new VertexBuffer();
+    vboTorus->bindBuffer();
+    vboTorus->pushData(torus->getRowVerticiesData(),torus->getVertDataSize());
+    // Vertex Array Object
+    VertexArrayObject* vaoTorus=new VertexArrayObject();
+    vaoTorus->bindBuffer();
+    vaoTorus->bindDataSrtucture();
+    Texture* texTorus=new Texture();
+    texTorus->loadTexture(RUBBER_TEXT_PATH);
+    glm::mat4 model_matrix_torus=glm::mat4(1.0f); // матрица модели - поворота на 90 градусов вокруг оси Х
+    model_matrix_torus=glm::rotate(model_matrix_torus, glm::radians(90.0f), glm::vec3(1.0, 0.0,0.0));
+
+    /****************************************/
+    // Октаэдр
+    Octahedron* oct=new Octahedron(1.0f);
+    VertexArrayObject* vaoOct=new VertexArrayObject();
+    VertexBuffer* vboOct=new VertexBuffer();
+    vboOct->bindBuffer();
+    vboOct->pushData(oct->getRowVerticiesData(),oct->getVertDataSize());
+    vaoOct->bindBuffer();
+    vaoOct->bindDataSrtucture();
+    Texture* texOct=new Texture();
+    texOct->bindTexture();
+    texOct->loadTexture(CONCRETE_TEXT_PATH);
+   // glm::mat4 model_oct(glm::mat4(1.0f));
+    glm::mat4 model_oct=glm::translate(glm::mat4(1.0f),glm::vec3(3,0,0));
+   //model_oct=glm::rotate(model_oct, glm::radians(90.0f), glm::vec3(1.0, 0.0,0.0));
 
     /********************************************************************/
+    Cylinder* cyl=new Cylinder(1.0f,0.5f);
+    VertexArrayObject* vaoCyl=new VertexArrayObject();
+    VertexBuffer* vboCyl=new VertexBuffer();
+    vboCyl->bindBuffer();
+    vboCyl->pushData(cyl->getRowVerticiesData(),cyl->getVertDataSize());
+    vaoCyl->bindBuffer();
+    vaoCyl->bindDataSrtucture();
+    Texture* texCyl=new Texture();
+    texCyl->bindTexture();
+    texCyl->loadTexture(RUST_TEXT_PATH);
+    glm::mat4 model_cyl=glm::mat4(1);
+    model_cyl=glm::rotate(model_cyl, glm::radians(90.0f), glm::vec3(1.0, 0.0,0.0));
+    model_cyl=glm::translate(model_cyl, glm::vec3(0.0, 0.0,-0.5));
+    /********************************************************************/
     // матрицы трансформаций
-    glm::mat4 model_matrix=glm::mat4(1.0f); // матрица модели - поворота на 90 градусов вокруг оси Х
- //   model_matrix=glm::rotate(model_matrix, glm::radians(90.0f), glm::vec3(1.0, 0.0,0.0));
     glm::mat4 view_matrix;   // матрица вида
      // аргументы - позиция камеры, позиция фокуса,вектор вверх в мировых координатах
     view_matrix = glm::lookAt(glm::vec3(0, 0,8.0f ),glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3(0.0f, 1.0f, 1.0f));
@@ -76,10 +104,16 @@ int main()
     shaderObj->useShaderProgram();
     shaderObj->deleteShaders();
     shaderObj->findModelMatrixLocation("model_matr");
-    shaderObj->setModelMatrix(glm::value_ptr(model_matrix));
+    shaderObj->setModelMatrix(glm::value_ptr(model_matrix_torus));
     shaderObj->findViewMatrixLocation("view_matr");
     shaderObj->findProjMatrixLocation("proj_matr");
     shaderObj->setProjMatrix(glm::value_ptr(projection_matrix));
+
+    glm::vec3 lightLoc(10,10,0);
+    shaderObj->findLightSourceLocation("lightPos");
+    shaderObj->setLightSourceVec(lightLoc);
+    shaderObj->findLightColorLocation("lightColor");
+    shaderObj->setLightColorVec(glm::vec3(1,1,1));
 
     glEnable(GL_DEPTH_TEST); // тестирование буфера глубины
     glPolygonMode(GL_FRONT, GL_FILL);
@@ -94,8 +128,13 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window,true);
     ImGui_ImplOpenGL3_Init("#version 330");
     float cameraz{7.0f},cameray{4.0f},camerax{4.0f};
-    float lastTime{0.0f},now{0.0f};
-    float speedA{70.0f};
+    float lightX{5},lightY{5},lightZ{0};
+//    float lastTime{0.0f},now{0.0f};
+    float speedA{0.3f};
+
+    glFrontFace(GL_CCW);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
      /********************************************************************/
     // Главный цикл рендеринга
     while (!glfwWindowShouldClose(window))
@@ -104,31 +143,56 @@ int main()
         processInput(window);
 		// Выполнение рендеринга
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //gui
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         ImGui::Begin("Матрицы");
-        ImGui::SliderFloat("Камера Z", &cameraz, 0.0f, 50.0f);
         ImGui::SliderFloat("Камера X", &camerax, 0.0f, 20.0f);
         ImGui::SliderFloat("Камера Y", &cameray, 0.0f, 20.0f);
-        ImGui::SliderFloat("Скорость А", &speedA, 0.0f, 1000.0f);
+        ImGui::SliderFloat("Камера Z", &cameraz, 0.0f, 50.0f);
+        ImGui::SliderFloat("Свет X", &lightX, -20.0f, 20.0f);
+        ImGui::SliderFloat("Свет Y", &lightY, -20.0f, 20.0f);
+        ImGui::SliderFloat("Свет Z", &lightZ, -20.0f, 50.0f);
+        ImGui::SliderFloat("Скорость А", &speedA, 0.0f, 2.0f);
         ImGui::End();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+        shaderObj->setLightSourceVec(glm::vec3(lightX,lightY,lightZ));
 
         view_matrix = glm::lookAt(glm::vec3(camerax, cameray,cameraz),glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3(0.0f, 1.0f, 0.0f));
         shaderObj->setViewMatrix(glm::value_ptr(view_matrix));
 
-       // now=glfwGetTime();
-       // model_matrix=glm::rotate(model_matrix, glm::radians((now-lastTime)*speedA), glm::vec3(0.0, 0.0,1.0));
-        shaderObj->setModelMatrix(glm::value_ptr(model_matrix));
-        //glDrawArrays(GL_POINTS, 0, torus.getPointsCount());
-         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glDrawElements(GL_TRIANGLES,torus.getIndCount(),GL_UNSIGNED_INT,0);
-        lastTime=now;
+        // torus
+        vaoTorus->bindBuffer();
+        texTorus->activate();
+
+//        now=glfwGetTime();
+       // model_matrix_torus=glm::rotate(model_matrix_torus, glm::radians((now-lastTime)*speedA), glm::vec3(0.0, 0.0,1.0));
+        shaderObj->setModelMatrix(glm::value_ptr(model_matrix_torus));
+        glDrawArrays(GL_TRIANGLES, 0, torus->getPointsCount());
+
+        // octahedron
+        vaoOct->bindBuffer();
+        texOct->activate();
+         model_oct=glm::translate(glm::mat4(1),glm::vec3( sin(glfwGetTime()*speedA)*3, 0.0, cos(glfwGetTime()*speedA)*3 ) );
+        shaderObj->setModelMatrix(glm::value_ptr(model_oct));
+        glDrawArrays(GL_TRIANGLES, 0, oct->getPointsCount());
+
+        // cylinder
+        vaoCyl->bindBuffer();
+        texCyl->activate();
+
+        shaderObj->setModelMatrix(
+                glm::value_ptr(
+                    glm::translate( glm::mat4(1),glm::vec3( -sin(glfwGetTime()*speedA)*3, 0.0, -cos(glfwGetTime()*speedA)*3 )) * model_cyl)
+        );
+         glDrawArrays(GL_TRIANGLES, 0, cyl->getPointsCount());
+
+         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        //lastTime=now;
 
         // glfw: обмен содержимым front- и back-буферов. Отслеживание событий ввода/вывода
         glfwSwapBuffers(window);
@@ -144,8 +208,20 @@ int main()
     ImGui::DestroyContext();
 
     // glfw: завершение, освобождение всех ранее задействованных GLFW-ресурсов
-    delete vao;
-    delete vbo;
+    delete torus;
+    delete vaoTorus;
+    delete vboTorus;
+    delete texTorus;
+    delete oct;
+    delete vaoOct;
+    delete vboOct;
+    delete texOct;
+
+    delete cyl;
+    delete vaoCyl;
+    delete vboCyl;
+    delete texCyl;;
+
     delete shaderObj;
     glfwTerminate();
     return 0;
