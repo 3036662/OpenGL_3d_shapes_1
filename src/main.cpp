@@ -34,7 +34,7 @@
 #include <Cylinder.h>
 
 //const char* RUBBER_TEXT_PATH="/home/aleh/CodeBlocks_projects/GL_CP/Tex/Rubber.png";
-const char* RUBBER_TEXT_PATH="Tex/Rubber_small.png";
+const char* RUBBER_TEXT_PATH="Tex/water.png";
 const char* CONCRETE_TEXT_PATH="Tex/concrete.png";
 const char* RUST_TEXT_PATH="Tex/rust.png";
 
@@ -114,6 +114,9 @@ int main()
     shaderObj->setLightSourceVec(lightLoc);
     shaderObj->findLightColorLocation("lightColor");
     shaderObj->setLightColorVec(glm::vec3(1,1,1));
+    shaderObj->findCameraPosLoc("viewPos");
+
+
 
     glEnable(GL_DEPTH_TEST); // тестирование буфера глубины
     glPolygonMode(GL_FRONT, GL_FILL);
@@ -165,12 +168,13 @@ int main()
         view_matrix = glm::lookAt(glm::vec3(camerax, cameray,cameraz),glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3(0.0f, 1.0f, 0.0f));
         shaderObj->setViewMatrix(glm::value_ptr(view_matrix));
 
+        // установить позицию наблюдателя
+        // нужна для вычисления отраженного света
+        shaderObj->setCameraPosVec(glm::vec3(camerax, cameray,cameraz));
+
         // torus
         vaoTorus->bindBuffer();
         texTorus->activate();
-
-//        now=glfwGetTime();
-       // model_matrix_torus=glm::rotate(model_matrix_torus, glm::radians((now-lastTime)*speedA), glm::vec3(0.0, 0.0,1.0));
         shaderObj->setModelMatrix(glm::value_ptr(model_matrix_torus));
         glDrawArrays(GL_TRIANGLES, 0, torus->getPointsCount());
 
@@ -191,9 +195,9 @@ int main()
         );
          glDrawArrays(GL_TRIANGLES, 0, cyl->getPointsCount());
 
-         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        //lastTime=now;
 
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         // glfw: обмен содержимым front- и back-буферов. Отслеживание событий ввода/вывода
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -212,6 +216,7 @@ int main()
     delete vaoTorus;
     delete vboTorus;
     delete texTorus;
+
     delete oct;
     delete vaoOct;
     delete vboOct;

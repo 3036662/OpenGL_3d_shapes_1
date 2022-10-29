@@ -127,7 +127,7 @@ bool Shader::setProjMatrix(const float* matrix_prt){
 
 bool Shader::findLightSourceLocation(const char* uniform_name){
     lightSourceLoc=glGetUniformLocation(shaderProgram_id, uniform_name);
-    if (projLoc==-1u){return false;}
+    if (lightSourceLoc==-1u){return false;}
     return true;
 }
 
@@ -138,7 +138,7 @@ bool Shader::findLightSourceLocation(const char* uniform_name){
 
 bool Shader::findLightColorLocation(const char* uniform_name){
     lightColorLoc=glGetUniformLocation(shaderProgram_id, uniform_name);
-    if (projLoc==-1u){return false;}
+    if (lightColorLoc==-1u){return false;}
     return true;
 }
 
@@ -147,6 +147,13 @@ bool Shader::findLightColorLocation(const char* uniform_name){
     return true;
  }
 
+bool Shader::findCameraPosLoc(const  char* uniform_name){
+    CameraPosLoc=glGetUniformLocation(shaderProgram_id, uniform_name);
+    if (CameraPosLoc==-1u){return false;}
+    return true;
+}
 
-
-
+ bool Shader::setCameraPosVec(const glm::vec3& camera_pos_vec){
+    glUniform3fv(CameraPosLoc, 1,&camera_pos_vec[0]);
+    return true;
+ }

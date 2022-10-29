@@ -38,8 +38,9 @@ class Shader
         // light color
         bool findLightColorLocation(const char* uniform_name);
         bool setLightColorVec(const glm::vec3& light_color_vec);
-
-
+        // camera pos
+        bool findCameraPosLoc(const  char* uniform_name);
+        bool setCameraPosVec(const glm::vec3& camera_pos_vec);
 
 
     protected:
@@ -58,7 +59,7 @@ class Shader
 
         unsigned int lightSourceLoc;
         unsigned int lightColorLoc;
-
+        unsigned int CameraPosLoc;
 
 };
 

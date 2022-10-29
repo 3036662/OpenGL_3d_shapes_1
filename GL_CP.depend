@@ -176,10 +176,10 @@
 	<winapifamily.h>
 	<dlfcn.h>
 
-1666983280 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Shader.cpp
+1667027729 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Shader.cpp
 	"Shader.h"
 
-1666983217 /home/aleh/CodeBlocks_projects/GL_CP/include/Shader.h
+1667027674 /home/aleh/CodeBlocks_projects/GL_CP/include/Shader.h
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 	<iostream>
@@ -200,7 +200,7 @@
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 
-1666983025 source:/home/aleh/CodeBlocks_projects/GL_CP/src/main.cpp
+1667031185 source:/home/aleh/CodeBlocks_projects/GL_CP/src/main.cpp
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 	<cmath>
@@ -229,7 +229,7 @@
 
 1664958207 /home/aleh/CodeBlocks_projects/GL_CP/include/font_arial.hpp
 
-1666983544 /home/aleh/CodeBlocks_projects/GL_CP/include/shaders.h
+1667035510 /home/aleh/CodeBlocks_projects/GL_CP/include/shaders.h
 
 1650451179 /home/aleh/CodeBlocks_projects/GL_CP/include/glm/vec3.hpp
 	"./ext/vector_bool3.hpp"
