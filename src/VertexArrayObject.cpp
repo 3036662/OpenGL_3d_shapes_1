@@ -16,6 +16,11 @@ void VertexArrayObject::bindBuffer(){
     glBindVertexArray(VAO_id);
 }
 
+void VertexArrayObject::unbindBuffer(){
+    glBindVertexArray(0);
+}
+
+
 
 void VertexArrayObject::bindDataSrtucture(){
     // аттрибуты данных, арггументы:  индекс аттрибута, количество аттрибутов, тип аттрибута
@@ -27,4 +32,9 @@ void VertexArrayObject::bindDataSrtucture(){
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)( 2*sizeof(glm::vec3) )); // текстуры
     glEnableVertexAttribArray(2);
+}
+
+void VertexArrayObject::bindStructSkyBox(){
+    glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, sizeof(float)*3, (void*)0); // координаты
+    glEnableVertexAttribArray(0);
 }

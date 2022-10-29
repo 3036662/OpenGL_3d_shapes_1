@@ -44,7 +44,7 @@ Cylinder::Cylinder(float height,float radius)
             );
         }
     }
-
+    std::cout<<vertices.size();
 }
 
 

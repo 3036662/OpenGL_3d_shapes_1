@@ -13,6 +13,8 @@ class VertexArrayObject
 
         void bindBuffer();
         void bindDataSrtucture();
+        void bindStructSkyBox();
+        void unbindBuffer();
 
     protected:
 

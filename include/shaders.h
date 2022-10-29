@@ -32,15 +32,13 @@
     "void main()\n"
     "{\n"
         //fog
-        "float fog_maxdist = -8.0;"
-        "float fog_mindist = -1;"
-        "vec4  fog_colour = vec4(0.75, 0.75, 0.75, 1.0);"
-        //"float dist = length(FragPos.xyz);"
-        "float dist =FragPos.z;"
-        "float fog_factor = (fog_maxdist - dist) /(fog_maxdist - fog_mindist);"
-       "fog_factor =clamp(fog_factor, 0.0, 1.0);"
-        "fog_factor =exp(0.9*FragPos.z);"
-
+        "vec4  fog_colour = vec4(0.75, 0.75, 0.75, 1);"
+        " const float FogMax = 25.0;"
+        "const float FogMin = 20.0;"
+         "float dist= distance(viewPos,FragPos);"
+        "float fog_factor= (FogMax - dist) / (FogMax - FogMin);"
+        "fog_factor=clamp(fog_factor,0,1);"
+        // light
         "vec3 norm = normalize(outNorm);\n"
         "vec3 lightDir = normalize(lightPos - FragPos);\n"
         "float diff = max(dot(norm, lightDir), 0.0);"  //diffuse
@@ -49,13 +47,40 @@
         "vec3 reflectDir = reflect(-lightDir, norm);"
         "float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);"
         "vec3 specular = specularStrength * spec * lightColor;"
-        "vec4 result =vec4( ((diff+0.05) * lightColor)+ specular,1 );" // 0.05 is ambient lighting
+        "vec4 light_factor =vec4( ((diff+0.05) * lightColor)+ specular,1 );" // 0.05 is ambient lighting
 
-
-        //"FragColor =mix(fog_colour,texture(ourTexture, TexCoord),fog_factor)*result;"
-        "FragColor =result* texture(ourTexture, TexCoord);"
+        "FragColor =mix(fog_colour,light_factor*texture(ourTexture, TexCoord),fog_factor);"
+        //"FragColor =light_factor* texture(ourTexture, TexCoord);"
     "}\n\0";
 
+const char* cubeMapVS=
+"#version 330 core\n"
+"layout (location = 0) in vec3 aPos;"
+"out vec3 TexCoords;"
+"out vec3 FragPos;"
+"uniform mat4 projection;"
+"uniform mat4 view;"
+"void main()"
+"{"
+    "TexCoords = aPos;"
+    "vec4 pos  = projection * view * vec4(aPos, 1.0);"
+    "FragPos = aPos;"
+    "gl_Position = vec4(pos.x,pos.y,pos.w,pos.w);"
+"}";
 
+const char* cubeMapFS=
+"#version 330 core\n"
+"out vec4 FragColor;"
+"in vec3 TexCoords;"
+"in vec3 FragPos;"
+"uniform samplerCube skybox;"
+"void main()\n"
+"{"
+     "vec4  fog_colour = vec4(0.75, 0.75, 0.75, 1);"
+     "float dist =FragPos.z;"
+     "float fog_factor =exp(1.2*FragPos.z);"
+"    FragColor = texture(skybox, TexCoords);"
+    //"FragColor =mix(fog_colour,texture(skybox, TexCoords),fog_factor);"
+"}";
 
 #endif // SHADERS_H_INCLUDED
