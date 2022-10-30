@@ -29,6 +29,7 @@ Cylinder::Cylinder(float height,float radius)
     // стена цилиндра
     glm::vec3 a,b,c,d;
     for (float z=0;z<height;z+=hStep){ // z- высота
+        if (z+hStep>height){continue;}
         for (float i=0;i<circle;i+=rotation_step){
             a=glm::vec3( glm::cos(i)*radius,glm::sin(i)*radius,z);
             b=glm::vec3( glm::cos(i+rotation_step)*radius, glm::sin(i+rotation_step)*radius,z);

@@ -135,10 +135,10 @@ int main()
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window,true);
     ImGui_ImplOpenGL3_Init("#version 330");
-    float cameraz{7.0f},cameray{4.0f},camerax{4.0f};
+    float cameraz{12.0f},cameray{4.0f},camerax{4.0f};
     float lightX{5},lightY{5},lightZ{0};
 //    float lastTime{0.0f},now{0.0f};
-    float speedA{0.3f};
+    float speedA{0.4f};
 
     glFrontFace(GL_CCW);
    // glEnable(GL_CULL_FACE);
@@ -190,6 +190,8 @@ int main()
         shaderObj->useShaderProgram();
         shaderObj->setLightSourceVec(glm::vec3(lightX,lightY,lightZ));
 
+        camerax=cos(glfwGetTime()*speedA*0.2)*15;
+        cameraz=sin(glfwGetTime()*speedA*0.2)*15;
         view_matrix = glm::lookAt(glm::vec3(camerax, cameray,cameraz),glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3(0.0f, 1.0f, 0.0f));
         shaderObj->setViewMatrix(glm::value_ptr(view_matrix));
         shaderObj->setCameraPosVec(glm::vec3(camerax, cameray,cameraz));   // установить позицию наблюдателя нужна для вычисления отраженного света

@@ -33,9 +33,9 @@
     "{\n"
         //fog
         "vec4  fog_colour = vec4(0.75, 0.75, 0.75, 1);"
-        " const float FogMax = 25.0;"
-        "const float FogMin = 20.0;"
          "float dist= distance(viewPos,FragPos);"
+        " float FogMin = length(viewPos);"
+        "  float FogMax = FogMin+3;"
         "float fog_factor= (FogMax - dist) / (FogMax - FogMin);"
         "fog_factor=clamp(fog_factor,0,1);"
         // light
@@ -48,7 +48,6 @@
         "float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);"
         "vec3 specular = specularStrength * spec * lightColor;"
         "vec4 light_factor =vec4( ((diff+0.05) * lightColor)+ specular,1 );" // 0.05 is ambient lighting
-
         "FragColor =mix(fog_colour,light_factor*texture(ourTexture, TexCoord),fog_factor);"
         //"FragColor =light_factor* texture(ourTexture, TexCoord);"
     "}\n\0";
@@ -78,9 +77,9 @@ const char* cubeMapFS=
 "{"
      "vec4  fog_colour = vec4(0.75, 0.75, 0.75, 1);"
      "float dist =FragPos.z;"
-     "float fog_factor =exp(1.2*FragPos.z);"
-"    FragColor = texture(skybox, TexCoords);"
-    //"FragColor =mix(fog_colour,texture(skybox, TexCoords),fog_factor);"
+     "float fog_factor =0.35;"
+    //"    FragColor = texture(skybox, TexCoords);"
+    "FragColor =mix(fog_colour,texture(skybox, TexCoords),fog_factor);"
 "}";
 
 #endif // SHADERS_H_INCLUDED
