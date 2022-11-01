@@ -27,6 +27,14 @@ GLFWwindow* OpenGlInit(unsigned int width,unsigned int height,const char* name){
     glEnable(GL_MULTISAMPLE); // anti aliasing
     glEnable(GL_BLEND);
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+    // настройки opengl
+    glEnable(GL_DEPTH_TEST); // тестирование буфера глубины
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glFrontFace(GL_CCW);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
     return window;
 }
 
