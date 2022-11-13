@@ -25,7 +25,7 @@ GLFWwindow* OpenGlInit(unsigned int width,unsigned int height,const char* name){
         return nullptr;
     }
     glEnable(GL_MULTISAMPLE); // anti aliasing
-    glEnable(GL_BLEND);
+    //glEnable(GL_BLEND);
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
     // настройки opengl

@@ -22,8 +22,7 @@ const glm::vec2 tex_c3(0.5f,1.0f);
 class Octahedron:public Shape
 {
     public:
-        Octahedron()=delete;
-        Octahedron(float radius); // радиус окрудности в которую будет вписан октаэдр
+        Octahedron();
         ~Octahedron();
 
     protected:

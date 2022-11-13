@@ -1,18 +1,15 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <cmath>
-#include <memory>
+#include <glad/glad.h> // opengl загрузчик -opengl loader
+#include <GLFW/glfw3.h> // контексти окно - context and window
+#include <cmath> // математика - math
+#include <memory> // умные указатели - smart pointers
 
-// GUI imgui
+// GUI imgui  Интерфейс
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include <font_arial.hpp>
 
-
-#include <constants.h>
-#include <shaders.h>
-
+// математика  для матриц GLM -matrix math
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/vec4.hpp> // glm::vec4
 #include <glm/mat4x4.hpp> // glm::mat4
@@ -22,36 +19,43 @@
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 
 
+#include "constants.h"   // разрешение окна -screen width an height
+#include "shaders.h" // шейдеры GLSL shaders
+#include "gl_utils.h" // инициализация Opengl iniatilization
+#include "VertexBuffer.hpp" // VBO
+#include "VertexArrayObject.h" //VAO
+#include "ElementsBuffer.h" //EBO
+#include "Texture.h" // Texture loading class  -класс для хранения текстур
+#include "Shader.h" // класс для работы с шейдерами
+#include "Torus.h" // класс Тора - Torus class
+#include "Octahedron.h" // класс Октаэдра - Octahendron class
+#include "Cone.h"
+#include "Cylinder.h" // класс цилиндра - Cylinder class
 
-#include <gl_utils.h>
-#include <VertexBuffer.hpp>
-#include <VertexArrayObject.h>
-#include <ElementsBuffer.h>
-#include <Texture.h>
-#include <Shader.h>
-
-#include <Torus.h>
-#include <Octahedron.h>
-#include <Cylinder.h>
-
-//const char* RUBBER_TEXT_PATH="/home/aleh/CodeBlocks_projects/GL_CP/Tex/Rubber.png";
+// пути для загрузки текстур -paths for textures
 const char* TORUS_TEXT_PATH="Tex/water.png";
 const char* OCT_TEXT_PATH="Tex/concrete.png";
 const char* CYL_TEXT_PATH="Tex/rust.png";
-
-extern const  unsigned char water_tex_data[];
-extern const  unsigned char water_tex_size;
-
-
+const std::vector< std::string> faces
+    {
+    "Tex/skybox/right.jpg",
+    "Tex/skybox/left.jpg",
+    "Tex/skybox/top.jpg",
+    "Tex/skybox/bottom.jpg",
+    "Tex/skybox/front.jpg",
+    "Tex/skybox/back.jpg"
+    };
 
 int main()
 {
+    // OpenGl Window
     GLFWwindow* window=OpenGlInit(SCR_WIDTH,SCR_HEIGHT,"Course Project"); // GlUtils
     if (window==nullptr){
         return -1;
     }
 
     /**************************************/
+    // Тор
     std::unique_ptr<Torus>  torus=std::make_unique<Torus>(1,0.5);
     // создать буфер для точек (vertex bufer)
     std::unique_ptr<VertexBuffer> vboTorus=std::make_unique<VertexBuffer>();
@@ -62,14 +66,14 @@ int main()
     vaoTorus->bindBuffer();
     vaoTorus->bindDataSrtucture();
     std::unique_ptr<Texture> texTorus=std::make_unique<Texture>();
-    texTorus->loadTexture(TORUS_TEXT_PATH);
+    texTorus->loadTexture(TORUS_TEXT_PATH); // Загрузка текстуры- Texture Load
     glm::mat4 model_matrix_torus=glm::mat4(1.0f); // матрица модели - поворота на 90 градусов вокруг оси Х
     model_matrix_torus=glm::rotate(model_matrix_torus, glm::radians(90.0f), glm::vec3(1.0, 0.0,0.0));
     vaoTorus->unbindBuffer();
 
     /****************************************/
     // Октаэдр
-    std::unique_ptr <Octahedron> oct=std::make_unique<Octahedron>(1.0f);
+    std::unique_ptr <Octahedron> oct=std::make_unique<Octahedron>();
     std::unique_ptr <VertexArrayObject> vaoOct=std::make_unique<VertexArrayObject>();
     std::unique_ptr <VertexBuffer> vboOct=std::make_unique<VertexBuffer>();
     vboOct->bindBuffer();
@@ -79,31 +83,43 @@ int main()
     std::unique_ptr <Texture> texOct=std::make_unique<Texture>();
     texOct->bindTexture();
     texOct->loadTexture(OCT_TEXT_PATH);
-    // glm::mat4 model_oct(glm::mat4(1.0f));
     glm::mat4 model_oct=glm::translate(glm::mat4(1.0f),glm::vec3(3,0,0));
-    //model_oct=glm::rotate(model_oct, glm::radians(90.0f), glm::vec3(1.0, 0.0,0.0));
     vaoOct->unbindBuffer();
-
     /********************************************************************/
-    std::unique_ptr <Cylinder> cyl=std::make_unique<Cylinder>(1.0f,0.5f);
-    std::unique_ptr <VertexArrayObject> vaoCyl=std::make_unique<VertexArrayObject>();
-    std::unique_ptr <VertexBuffer> vboCyl=std::make_unique<VertexBuffer>();
-    vboCyl->bindBuffer();
-    vboCyl->pushData(cyl->getRowVerticiesData(),cyl->getVertDataSize());
-
-    vaoCyl->bindBuffer();
-    vaoCyl->bindDataSrtucture();
-
-    std::unique_ptr <Texture> texCyl=std::make_unique<Texture>();
-    texCyl->bindTexture();
-    texCyl->loadTexture(CYL_TEXT_PATH);
-    glm::mat4 model_cyl=glm::mat4(1);
-    model_cyl=glm::rotate(model_cyl, glm::radians(90.0f), glm::vec3(1.0, 0.0,0.0));
-    model_cyl=glm::translate(model_cyl, glm::vec3(0.0, 0.0,-0.5));
-    vaoCyl->unbindBuffer();
-
-
+//    //Цилиндр
+//    std::unique_ptr <Cylinder> cyl=std::make_unique<Cylinder>(1.0f,0.5f);
+//    std::unique_ptr <VertexArrayObject> vaoCyl=std::make_unique<VertexArrayObject>();
+//    std::unique_ptr <VertexBuffer> vboCyl=std::make_unique<VertexBuffer>();
+//    vboCyl->bindBuffer();
+//    vboCyl->pushData(cyl->getRowVerticiesData(),cyl->getVertDataSize());
+//    vaoCyl->bindBuffer();
+//    vaoCyl->bindDataSrtucture();
+//    std::unique_ptr <Texture> texCyl=std::make_unique<Texture>();
+//    texCyl->bindTexture();
+//    texCyl->loadTexture(CYL_TEXT_PATH);
+//    glm::mat4 model_cyl=glm::mat4(1);
+//    model_cyl=glm::rotate(model_cyl, glm::radians(90.0f), glm::vec3(1.0, 0.0,0.0));
+//    model_cyl=glm::translate(model_cyl, glm::vec3(0.0, 0.0,-0.5));
+//    vaoCyl->unbindBuffer();
     /********************************************************************/
+
+    std::unique_ptr <Cone> cone=std::make_unique<Cone>(1.5f,1.0f);
+    std::unique_ptr <VertexArrayObject> vaoCone=std::make_unique<VertexArrayObject>();
+    std::unique_ptr <VertexBuffer> vboCone=std::make_unique<VertexBuffer>();
+    vboCone->bindBuffer();
+    vboCone->pushData(cone->getRowVerticiesData(),cone->getVertDataSize());
+    vaoCone->bindBuffer();
+    vaoCone->bindDataSrtucture();
+    std::unique_ptr <Texture> texCone=std::make_unique<Texture>();
+    texCone->bindTexture();
+    texCone->loadTexture(CYL_TEXT_PATH);
+    glm::mat4 model_cone=glm::mat4(1);
+    model_cone=glm::rotate(model_cone, glm::radians(-90.0f), glm::vec3(1.0, 0.0,0.0));
+    model_cone=glm::translate(model_cone, glm::vec3(0.0, 0.0,-0.5));
+    vaoCone->unbindBuffer();
+
+
+
     // матрицы трансформаций
     glm::mat4 view_matrix;   // матрица вида
      // аргументы - позиция камеры, позиция фокуса,вектор вверх в мировых координатах
@@ -118,10 +134,10 @@ int main()
     shaderObj->compileShaderProgram();
     shaderObj->useShaderProgram();
     shaderObj->deleteShaders();
-    shaderObj->findModelMatrixLocation("model_matr");
+    shaderObj->findModelMatrixLocation("model_matr"); // Матрица модели
     shaderObj->setModelMatrix(glm::value_ptr(model_matrix_torus));
-    shaderObj->findViewMatrixLocation("view_matr");
-    shaderObj->findProjMatrixLocation("proj_matr");
+    shaderObj->findViewMatrixLocation("view_matr"); // Матрица вида
+    shaderObj->findProjMatrixLocation("proj_matr"); // Матрица проекции
     shaderObj->setProjMatrix(glm::value_ptr(projection_matrix));
     glm::vec3 lightLoc(10,10,0);
     shaderObj->findLightSourceLocation("lightPos");
@@ -144,15 +160,6 @@ int main()
     float speedA{0.4f};
      /***********************************************************************/
     // Кубическая карта
-    const std::vector< std::string> faces
-    {
-    "Tex/skybox/right.jpg",
-    "Tex/skybox/left.jpg",
-    "Tex/skybox/top.jpg",
-    "Tex/skybox/bottom.jpg",
-    "Tex/skybox/front.jpg",
-    "Tex/skybox/back.jpg"
-    };
     unsigned int skyboxTexture = loadCubemap(faces);
     std::unique_ptr <VertexBuffer> vboCube= std::make_unique<VertexBuffer>();
     vboCube->bindBuffer();
@@ -191,16 +198,24 @@ int main()
         shaderObj->setCameraPosVec(glm::vec3(camerax, cameray,cameraz));   // установить позицию наблюдателя нужна для вычисления отраженного света
 
         // цилиндр
-        vaoCyl->bindBuffer();
-        texCyl->activate();
+//        vaoCyl->bindBuffer();
+//        texCyl->activate();
+//        shaderObj->setModelMatrix(
+//                glm::value_ptr(
+//                    glm::translate( glm::mat4(1),glm::vec3( -sin(glfwGetTime()*speedA)*3, 0, -cos(glfwGetTime()*speedA)*3 )) * model_cyl)
+//        );
+//        glDrawArrays(GL_TRIANGLES, 0, cyl->getPointsCount());
+//        vaoOct->unbindBuffer();
+        vaoCone->bindBuffer();
+        texCone->activate();
         shaderObj->setModelMatrix(
                 glm::value_ptr(
-                    glm::translate( glm::mat4(1),glm::vec3( -sin(glfwGetTime()*speedA)*3, 0, -cos(glfwGetTime()*speedA)*3 )) * model_cyl)
+                    glm::translate( glm::mat4(1),glm::vec3( -sin(glfwGetTime()*speedA)*3, 0, -cos(glfwGetTime()*speedA)*3 )) * model_cone)
         );
-        glDrawArrays(GL_TRIANGLES, 0, cyl->getPointsCount());
+        glDrawArrays(GL_TRIANGLES, 0, cone->getPointsCount());
         vaoOct->unbindBuffer();
 
-        // octahedron
+        // октаэдр - octahedron
         vaoOct->bindBuffer();
         texOct->activate();
         model_oct=glm::translate(glm::mat4(1),glm::vec3( sin(glfwGetTime()*speedA)*3, 0.0, cos(glfwGetTime()*speedA)*3 ) );
@@ -208,7 +223,7 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, oct->getPointsCount());
         vaoOct->unbindBuffer();
 
-        //torus
+        //тор  - torus
         vaoTorus->bindBuffer();
         texTorus->activate();
         glActiveTexture(GL_TEXTURE0);
@@ -217,7 +232,7 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, torus->getPointsCount());
         vaoTorus->unbindBuffer();
 
-        //  skybox
+        // кубическая карта - skybox
         glDepthFunc(GL_LEQUAL);
         skyBoxShader->useShaderProgram();
         glm::mat4 view = glm::mat4(glm::mat3(view_matrix));
@@ -229,7 +244,7 @@ int main()
         glDepthFunc(GL_LESS);
         glBindVertexArray(0);
 
-        //gui
+        // интерфес пользователя gui
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -253,8 +268,9 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
+    // удаление шейдеров
     shaderObj->deleteShaderProgram();
-
+    skyBoxShader->deleteShaderProgram();
     // завершить выполнени gui
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

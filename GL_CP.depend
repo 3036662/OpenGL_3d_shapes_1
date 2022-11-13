@@ -148,7 +148,7 @@
 	<stdint.h>
 	"imstb_textedit.h"
 
-1667302071 source:/home/aleh/CodeBlocks_projects/GL_CP/src/gl_utils.cpp
+1667824581 source:/home/aleh/CodeBlocks_projects/GL_CP/src/gl_utils.cpp
 	<gl_utils.h>
 
 1667043202 /home/aleh/CodeBlocks_projects/GL_CP/include/gl_utils.h
@@ -202,7 +202,7 @@
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 
-1667302213 source:/home/aleh/CodeBlocks_projects/GL_CP/src/main.cpp
+1667823548 source:/home/aleh/CodeBlocks_projects/GL_CP/src/main.cpp
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 	<cmath>
@@ -211,8 +211,6 @@
 	<imgui/imgui_impl_glfw.h>
 	<imgui/imgui_impl_opengl3.h>
 	<font_arial.hpp>
-	<constants.h>
-	<shaders.h>
 	<glm/vec3.hpp>
 	<glm/vec4.hpp>
 	<glm/mat4x4.hpp>
@@ -220,15 +218,18 @@
 	<glm/ext/matrix_clip_space.hpp>
 	<glm/ext/scalar_constants.hpp>
 	<glm/gtc/type_ptr.hpp>
-	<gl_utils.h>
-	<VertexBuffer.hpp>
-	<VertexArrayObject.h>
-	<ElementsBuffer.h>
-	<Texture.h>
-	<Shader.h>
-	<Torus.h>
-	<Octahedron.h>
-	<Cylinder.h>
+	"constants.h"
+	"shaders.h"
+	"gl_utils.h"
+	"VertexBuffer.hpp"
+	"VertexArrayObject.h"
+	"ElementsBuffer.h"
+	"Texture.h"
+	"Shader.h"
+	"Torus.h"
+	"Octahedron.h"
+	"Cone.h"
+	"Cylinder.h"
 
 1664958207 /home/aleh/CodeBlocks_projects/GL_CP/include/font_arial.hpp
 
@@ -1153,7 +1154,7 @@
 	<glad/glad.h>
 	<GLFW/glfw3.h>
 
-1666949220 /home/aleh/CodeBlocks_projects/GL_CP/include/Shape.h
+1667492182 /home/aleh/CodeBlocks_projects/GL_CP/include/Shape.h
 	<iostream>
 	<vector>
 	<glm/vec3.hpp>
@@ -1194,10 +1195,10 @@
 	<stb_image.h>
 	<iostream>
 
-1667054099 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Octahedron.cpp
+1667823456 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Octahedron.cpp
 	"Octahedron.h"
 
-1666860939 /home/aleh/CodeBlocks_projects/GL_CP/include/Octahedron.h
+1667823496 /home/aleh/CodeBlocks_projects/GL_CP/include/Octahedron.h
 	"Shape.h"
 
 1650451179 /home/aleh/CodeBlocks_projects/GL_CP/include/glm/gtx/normal.hpp
@@ -1214,4 +1215,10 @@
 	<glm/gtc/constants.hpp>
 
 1667288957 source:/home/aleh/CodeBlocks_projects/GL_CP/src/water_tex.cpp
+
+1667476475 source:/home/aleh/CodeBlocks_projects/GL_CP/src/Cone.cpp
+	"Cone.h"
+
+1667475534 /home/aleh/CodeBlocks_projects/GL_CP/include/Cone.h
+	<Shape.h>
 
