@@ -9,8 +9,9 @@ Cone::Cone(float hieght,float radius)
     for (float i=0;i<circle;i+=rotation_step){
         make_triangle(
                 glm::vec3(0),
-                glm::vec3( glm::cos(i)*radius,glm::sin(i)*radius,0 ), //a
                 glm::vec3( glm::cos(i+rotation_step)*radius, glm::sin(i+rotation_step)*radius,0), // b
+                glm::vec3( glm::cos(i)*radius,glm::sin(i)*radius,0 ), //a
+
                 glm::vec2(0),
                 glm::vec2(1,0),
                 glm::vec2(0.5,1)
